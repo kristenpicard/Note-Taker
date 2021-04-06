@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(__dirname + "/public"));
 
 // ROUTING
 
@@ -24,15 +25,20 @@ app.use(express.json());
 // In each of the below cases the user is shown an HTML page of content
 
 app.get("/notes", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/notes.html"));
+  res.sendFile(path.join(__dirname, "public/notes.html"));
 });
 
 // If no matching route is found default to original landing page
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/index.html"));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-// API GET Requests
+// Redirects to index if no routes match
+app.get("*", function (req, res) {
+  res.redirect("/");
+});
+
+// API GET Request
 
 // Sends notes to the db.json file
 app.get("/api/notes", (req, res) => res.json(__dirname, "db.json"));
