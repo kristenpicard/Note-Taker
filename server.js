@@ -1,7 +1,3 @@
-// KRISTEN - AS OF 4/6 THINK THIS HAS ALL CORRECT SERVER ELEMENTS.
-// JUST NEED TO ADD CONTROL FLOW IN POST REQUEST
-// AND/OR DELETE FUNCTIONALITY
-
 // Dependencies
 
 const express = require("express");
@@ -33,38 +29,68 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
+// API GET Request
+
+// Sends notes to the db.json file
+app.get("/api/notes", (req, res) => {
+  console.log("tesfewkahfkwet");
+
+  fs.readFile(path.join(__dirname, "db.json"), "utf8", (err, jsonString) => {
+    if (err) {
+      console.log("File read failed:", err);
+      return;
+    }
+    console.log(JSON.parse(jsonString));
+    res.json(JSON.parse(jsonString));
+  });
+});
+
 // Redirects to index if no routes match
 app.get("*", function (req, res) {
   res.redirect("/");
 });
 
-// API GET Request
-
-// Sends notes to the db.json file
-app.get("/api/notes", (req, res) => res.json(__dirname, "db.json"));
-
 // API POST Requests
 
 app.post("/api/notes", (req, res) => {
-  // HERE I NEED TO EDIT CONTROL FLOW
-  //   if (tableData.length < 5) {
-  //     tableData.push(req.body);
-  //     res.json(true);
-  //   } else {
-  //     waitListData.push(req.body);
-  //     res.json(false);
-  //   }
+  console.log("test");
+  fs.readFile(
+    path.join(__dirname, "db.json"),
+    "utf8",
+    function (error, response) {
+      if (error) {
+        console.log(error);
+      }
+      const notes = JSON.parse(response);
+      const noteRequest = req.body;
+      const newNoteId = notes.length + 1;
+      const newNote = {
+        id: newNoteId,
+        title: noteRequest.title,
+        text: noteRequest.text,
+      };
+      notes.push(newNote);
+      res.json(newNote);
+      fs.writeFile(
+        path.join(__dirname, "db.json"),
+        JSON.stringify(notes, null, 2),
+        function (err) {
+          if (err) throw err;
+        }
+      );
+    }
+  );
 });
 
 // POTENTIALLY WHERE I WILL ADD THE DELET FUNCTIONALITY
 
-app.post("/api/clear", (req, res) => {
-  // Empty out the arrays of data
-  tableData.length = 0;
-  waitListData.length = 0;
+// app.post("/api/clear", (req, res) => {
+//   // Empty out the arrays of data
+//   tableData.length = 0;
+//   waitListData.length = 0;
 
-  res.json({ ok: true });
-});
+//   res.json({ ok: true });
+// });
 
 // LISTENER
 // The below code effectively "starts" our server
