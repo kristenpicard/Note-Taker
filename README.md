@@ -29,9 +29,7 @@ https://github.com/kristenpicard
 
 ## Tests
 
-![Demo:](/img/1.gif)
-
-[Click here to view a video that demonstrates the applications functionality](https://drive.google.com/file/d/1byHtOAQGtUakIc1F4qWU8T6G_nsAP2Ko/view?usp=sharing)
+Click this link to be taken to the live application: https://nameless-scrubland-69364.herokuapp.com/
 
 ## Questions
 
