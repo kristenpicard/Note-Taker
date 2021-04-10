@@ -33,14 +33,11 @@ app.get("/", (req, res) => {
 
 // Sends notes to the db.json file
 app.get("/api/notes", (req, res) => {
-  console.log("tesfewkahfkwet");
-
   fs.readFile(path.join(__dirname, "db.json"), "utf8", (err, jsonString) => {
     if (err) {
       console.log("File read failed:", err);
       return;
     }
-    console.log(JSON.parse(jsonString));
     res.json(JSON.parse(jsonString));
   });
 });
@@ -54,7 +51,6 @@ app.get("*", function (req, res) {
 // API POST Requests
 
 app.post("/api/notes", (req, res) => {
-  console.log("test");
   fs.readFile(
     path.join(__dirname, "db.json"),
     "utf8",
@@ -62,19 +58,19 @@ app.post("/api/notes", (req, res) => {
       if (error) {
         console.log(error);
       }
-      const notes = JSON.parse(response);
-      const noteRequest = req.body;
-      const newNoteId = notes.length + 1;
+      const note = JSON.parse(response);
+      const noteReq = req.body;
+      const newNoteId = note.length + 1;
       const newNote = {
         id: newNoteId,
-        title: noteRequest.title,
-        text: noteRequest.text,
+        title: noteReq.title,
+        text: noteReq.text,
       };
-      notes.push(newNote);
+      note.push(newNote);
       res.json(newNote);
       fs.writeFile(
         path.join(__dirname, "db.json"),
-        JSON.stringify(notes, null, 2),
+        JSON.stringify(note, null, 2),
         function (err) {
           if (err) throw err;
         }
@@ -82,16 +78,6 @@ app.post("/api/notes", (req, res) => {
     }
   );
 });
-
-// POTENTIALLY WHERE I WILL ADD THE DELET FUNCTIONALITY
-
-// app.post("/api/clear", (req, res) => {
-//   // Empty out the arrays of data
-//   tableData.length = 0;
-//   waitListData.length = 0;
-
-//   res.json({ ok: true });
-// });
 
 // LISTENER
 // The below code effectively "starts" our server
