@@ -25,15 +25,14 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
 
-const getNotes = () => {
-  console.log("sdkfjsk;jdfhskjfh");
+const getNotes = () =>
   fetch("/api/notes", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   });
-};
+
 const saveNote = (note) =>
   fetch("/api/notes", {
     method: "POST",
@@ -171,6 +170,7 @@ const renderNoteList = async (notes) => {
 };
 
 // Gets notes from the db and renders them to the sidebar
+console.log(getNotes());
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
 if (window.location.pathname === "/notes") {

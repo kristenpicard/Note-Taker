@@ -45,6 +45,7 @@ app.get("/api/notes", (req, res) => {
   });
 });
 
+///// PSA this has to be below all other app.get methods or it will run every time
 // Redirects to index if no routes match
 app.get("*", function (req, res) {
   res.redirect("/");
